@@ -1,0 +1,19 @@
+{
+  "name": "recipehouse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.15.5",
+    "method-override": "^2.3.9",
+    "mongoose": "^4.11.13",
+    "package": "^1.0.1"
+  }
+}
