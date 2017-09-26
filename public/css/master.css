@@ -1,0 +1,26 @@
+.home h1{
+ color: darkseagreen;
+}
+/* global style */
+.buttons form{
+ display: inline-block;
+}
+
+/* home style */
+.home h1{
+ color: darkseagreen;
+}
+
+/* post style */
+.post h2 {
+ color: tomato;
+ text-align: center;
+}
+.post .post-body{
+ white-space: pre-line; /* 1 */
+}
+/*이 css가 없으면 post-body에 줄바꿈이 있어도 줄바꿈을 표시하지 않습니다.
+ 이는 data 상의 줄바꿈(\n)과 html의 줄바꿈(<br>)이 다르기 때문입니다.*/
+.post .posts .date{
+ width: 100px;
+}
