@@ -23,7 +23,7 @@
     <tbody>
      <% if(posts == null || posts.length == 0){ %>
       <tr>
-       <td class="noData" colspan=100> There is no data to show :( </td>
+       <td class="noData" colspan=100> 글을 작성해 주세요! </td>
       </tr>
      <% } %>
      <% posts.forEach(function(post) { %>
@@ -38,7 +38,7 @@
      <% }) %>
     </tbody>
    </table>
-  </div> <!-- container end -->
+  </div>
   <% include ../partials/footer %>
  </body>
 </html>

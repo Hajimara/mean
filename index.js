@@ -24,6 +24,7 @@ app.use(methodOverride("_method"));
 // Routes
 app.use("/", require("./routes/home"));
 app.use("/posts", require("./routes/posts")); // posts를 호출한 경우에만 이 route를 사용함
+app.use("/users", require("./routes/users"));
 // Port setting
 app.listen(3000, function(){
  console.log("server on!");

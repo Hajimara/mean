@@ -43,7 +43,7 @@ postSchema.virtual("updatedTime")
 // 위에서 정의한 스키마모델 postSchema로 컴파일을 한다.
 // model객체로 된 schema를 가지고 있다면 모델 의 문서에 접근 하여 작업을 할 수있음
 // model(name,[schema],[collection],[skipInit])
-// name 나중에 모데라을 찾을 때 model(name)과 같이 사용
+// name 나중에 모델을 찾을 때 model(name)과 같이 사용
 // schema Schema객체를 나타냄
 // Schema객체를 지정하지 않았다면 collection 파라미터를 통해 컬렉션의 이름을 지정할 수 있음
 // skipInit 기본값 false ture면 초기화 프로세스를 건너뛰고 db와 연결되지 않은 상태의 간단한 model객체가 생성됨
