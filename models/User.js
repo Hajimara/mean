@@ -19,7 +19,7 @@ var userSchema = mongoose.Schema({
   name:{
     type:String,
     required:[true,"Name is required"],
-    match:[/^.{4,12}$/,"Should be 4-12 charachters"],
+    match:[/^.{2,12}$/,"Should be 2-12 charachters"],
     trim:true
   },
   email:{
@@ -53,7 +53,7 @@ userSchema.virtual("newPassword")
 .set(function(value){this._newPassword=value;});
 
 //password Vaildation
-var passwordRegex = /^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,16}$/;
+var passwordRegex = /^(?=.*[A-Za-z])(?=.*d)[A-Za-zd].{8,16}$/;
 var passwordRegexErrorMessage="Should be minimum 8 charachters of  alphabet and number combination";
 
 // password 유효 확인

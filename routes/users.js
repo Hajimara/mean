@@ -99,13 +99,13 @@ module.exports = router;
 //Function
 //mongoose에서 내는 에러와 mongoDB에서 내는 에러의 형태가 다르기 때문에 이 함수를 통하여
 //에러의 형태를 {항목이름 : {message : "에러 메세지"}}로 통일시켜주는 함수
-function ParseError(errors){
+function parseError(errors){
   var parsed = {};
   console.log("errors: ", errors);// 콘솔에서 에러 원형 확인
   if(errors.name == 'ValidationError'){ //mongoose의 model validaion error를 처리
     for(var name in errors.errors){
       var validationError = errors.errors[name];
-      parsed[name] = {message:ValidationError.message};
+      parsed[name] = {message:validationError.message};
     }
   }else if(errors.code == "11000" && errors.errmsg.indexOf("username")>0){
     parsed.username = { message:"This username already exists!"}; // mongoDB에서 username이 중복되는 에러 처리
