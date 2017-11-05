@@ -53,7 +53,7 @@ userSchema.virtual("newPassword")
 .set(function(value){this._newPassword=value;});
 
 //password Vaildation
-var passwordRegex = /^(?=.*[A-Za-z])(?=.*d)[A-Za-zd].{8,16}$/;
+var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/;
 var passwordRegexErrorMessage="Should be minimum 8 charachters of  alphabet and number combination";
 
 // password 유효 확인
@@ -124,4 +124,5 @@ userSchema.method.authenticate = function(password){
 
 // Schema를 model 객체로 만들어 문서에서 사용 할 수 있게 한다.
 var User = mongoose.model("user",userSchema);
+
 module.exports = User;
