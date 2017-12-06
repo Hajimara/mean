@@ -1,6 +1,6 @@
-var passport = require("passport");
+var passport   = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
-var User = require("../models/User");
+var User     = require("../models/User");
 
 
 //serialize, deserialize User
@@ -62,3 +62,5 @@ passport.use("local-login",
     }
   )
 );
+
+module.exports = passport;

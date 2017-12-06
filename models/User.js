@@ -114,15 +114,14 @@ userSchema.pre("save",function(next){
   }
 });
 
-userSchema.method.authenticate = function(password){
-  var user=this;
+userSchema.methods.authenticate = function (password) {
+  var user = this;
   return bcrypt.compareSync(password,user.password);
 };
 
 //user model의 password hash와 입력받은 password text를 비교하는 method를 추가합니다.
 //나중에 로그인을 만들때 될 method
 
-// Schema를 model 객체로 만들어 문서에서 사용 할 수 있게 한다.
+// Schema를 model 객체로 만들어 문서(from)에서 사용 할 수 있게 한다.
 var User = mongoose.model("user",userSchema);
-
 module.exports = User;

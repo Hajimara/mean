@@ -199,3 +199,21 @@ form .form-group{
  font-family: 'Open Sans', sans-serif;
  font-size: 12px;
 }
+.ellipsis{ /* text내용이 width보다 길때 잘라냄 ...추가 overflow, text-overflow
+  white-space: nowrap;은 text에 space가 있고 text 길이가 width보다
+  긴 경우 자동으로 줄바꿈을 하는데, 이것을 방지하기 위함.*/
+ display: block;
+ width: 100%;
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+}
+.post-index .posts{
+ border-top: 1px solid #ccc;
+ border-bottom: 1px solid #ccc;
+ table-layout: fixed; /*  */
+}
+.post .posts .author{ /*  */
+ text-align: center;
+ width: 80px;
+}

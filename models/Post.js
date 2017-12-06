@@ -1,13 +1,33 @@
 var mongoose = require("mongoose");
-
+var util     = require("../util");
 // schema
 var postSchema = mongoose.Schema({ // 1
- title:{type:String, required:true},
- body:{type:String},
- createdAt:{type:Date, default:Date.now}, // 2
- updatedAt:{type:Date},
+ title:{
+   type:String,
+  required:[true,"Title is required"]
+},
+ body:{
+   type:String,
+   required:[true,"body is required"]
+ },
+ author:{
+   type:mongoose.Schema.Types.ObjectId,
+   ref:"user",
+   require:true
+   //post에 작성자 정보 user.id를 기록하고 ,  이 정보는 user collection에서 가져오는 것임을
+   //ref로 지정
+ },
+ createdAt:{
+   type:Date,
+   default:Date.now
+ }, // 2
+ updatedAt:{
+   type:Date
+ },
 },{
- toObject:{virtuals:true} // 4 virtual들을 object에서 보여주는 mongoose schema의 option
+ toObject:{
+   virtuals:true
+ } // 4 virtual들을 object에서 보여주는 mongoose schema의 option
 });
 // Post의 스키마는 title, body, createdAt, updatedAt으로 구성한다.
 // default항목으로는 기본값을 지정 해 줄 수 있다.
@@ -21,22 +41,22 @@ var postSchema = mongoose.Schema({ // 1
 // virtuals // 3
 postSchema.virtual("createdDate")
 .get(function(){
- return getDate(this.createdAt);
+ return util.getDate(this.createdAt);
 });
 
 postSchema.virtual("createdTime")
 .get(function(){
- return getTime(this.createdAt);
+ return util.getTime(this.createdAt);
 });
 
 postSchema.virtual("updatedDate")
 .get(function(){
- return getDate(this.updatedAt);
+ return util.getDate(this.updatedAt);
 });
 
 postSchema.virtual("updatedTime")
 .get(function(){
- return getTime(this.updatedAt);
+ return util.getTime(this.updatedAt);
 });
 
 // model & export
@@ -49,21 +69,21 @@ postSchema.virtual("updatedTime")
 // skipInit 기본값 false ture면 초기화 프로세스를 건너뛰고 db와 연결되지 않은 상태의 간단한 model객체가 생성됨
 var Post = mongoose.model("post", postSchema);
 module.exports = Post;
-
-// functions
-function getDate(dateObj){
- if(dateObj instanceof Date) // 데이터타입 확인 후
-  return dateObj.getFullYear() + "-" + get2digits(dateObj.getMonth()+1)+ "-" + get2digits(dateObj.getDate());
-}
-
-function getTime(dateObj){
- if(dateObj instanceof Date)
-  return get2digits(dateObj.getHours()) + ":" + get2digits(dateObj.getMinutes())+ ":" + get2digits(dateObj.getSeconds());
-}
-
-function get2digits(num){
- return ("0" + num).slice(-2);// slice(index,[index]) 앞 인덱스 기준으로 끝까지 자름
-}                             // 음수 인덱스는 끝으로부터의 거리
+//
+// // functions
+// function getDate(dateObj){
+//  if(dateObj instanceof Date) // 데이터타입 확인 후
+//   return dateObj.getFullYear() + "-" + get2digits(dateObj.getMonth()+1)+ "-" + get2digits(dateObj.getDate());
+// }
+//
+// function getTime(dateObj){
+//  if(dateObj instanceof Date)
+//   return get2digits(dateObj.getHours()) + ":" + get2digits(dateObj.getMinutes())+ ":" + get2digits(dateObj.getSeconds());
+// }
+//
+// function get2digits(num){
+//  return ("0" + num).slice(-2);// slice(index,[index]) 앞 인덱스 기준으로 끝까지 자름
+// }                             // 음수 인덱스는 끝으로부터의 거리
 // get2digits는 그냥 숫자의 형태를 마춰주기 위한 함수로,
 // 시간을 항상 2자리로 표시하기 위해 만든 함수. 2자리인 숫자를 넣으면 그냥 그대로 나오고
 // 한자리인 숫자를 넣으면 앞에 0이 붙어서 나오게 됨

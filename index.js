@@ -11,7 +11,7 @@ var app = express();
 mongoose.connect(process.env.MONGO_DB, { useMongoClient: true }); // 1
 var db = mongoose.connection;
 db.once("open", function(){
- console.log("DB connected");
+ console.log("DB가 연결되었습니다!");
 });
 db.on("error", function(err){
  console.log("DB ERROR : ", err);
@@ -37,6 +37,7 @@ app.use(session({secret:"MySecret"}));
 //user2가 생성한 flash는 user2에게 보여져야 하기 때문에 session이 필요
 
 // passport
+//console.log("passport: ", passport); require가 제대로 되었는지 확인할 때
 app.use(passport.initialize());
 //passport를 초기화시켜줌
 app.use(passport.session());
@@ -61,7 +62,7 @@ app.use("/users", require("./routes/users"));
 
 // Port setting
 app.listen(3000, function(){
- console.log("server on!");
+ console.log("서버가 동작합니다!");
 });
 
 //mongo ds149874.mlab.com:49874/recipehouse -u <dbuser> -p <dbpassword> db 시동

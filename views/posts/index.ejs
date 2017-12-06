@@ -10,13 +10,18 @@
    <% include ./partials/header ﻿%>
 
    <div class="buttons">
+     <% if(isAuthenticated){ %>
     <a class="btn btn-default" href="/posts/new">New</a>
+    <% } %>
    </div>
-
+<!--index.ejs에서 new 버튼은 로그인된 경우에만 보이게 됨
+ 참고로isAuthenticated는 게시판 - Login 기능에서 index.js속에 만들었던 함수
+ req.locals에 들어있어서 ejs에서 바로 사용할 수 있음. -->
    <table class="table table-striped posts">
     <thead>
      <tr>
       <th class="title">Title</th>
+      <<th class="author">Author</th>
       <th class="date">Date</th>
      </tr>
     </thead>
@@ -29,7 +34,10 @@
      <% posts.forEach(function(post) { %>
       <tr>
        <td class="title">
-        <a href="/posts/<%= post._id %>"><div><%= post.title %></div></a>
+        <a href="/posts/<%= post._id %>"><div class = "ellipsis"><%= post.title %></div></a>
+       </td>
+       <td class="author">
+         <div class="ellipsis"><%= post.author ?post.author.username : ""%></div>
        </td>
        <td class="date">
         <%= post.createdDate %>

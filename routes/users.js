@@ -1,8 +1,9 @@
 var express = require("express");
 var router = express.Router();
 var User = require("../models/User");
+var util = require("../util");
 // Index
-router.route("/").get(function(req,res){
+router.get("/",util.isLoggedin, function(req,res){
   User.find({})
   .sort({username:1}) //username 기준 내림차순 정렬
   .exec(function(err,users){
@@ -27,7 +28,7 @@ router.post("/",function(req,res){//req.body user/new에서 폼을 전달받아 
   User.create(req.body,function(err,user){
     if(err){
       req.flash("user", req.body);
-      req.flash("errors", parseError(err));
+      req.flash("errors", util.parseError(err));
       return res.redirect("/users/new");
     }
     res.redirect("/users");
@@ -35,7 +36,7 @@ router.post("/",function(req,res){//req.body user/new에서 폼을 전달받아 
 });
 
 // show
-router.get("/:username", function(req, res){
+router.get("/:username", util.isLoggedin, function(req, res){
  User.findOne({username:req.params.username}, function(err, user){
   if(err) return res.json(err);
   res.render("users/show", {user:user});
@@ -47,7 +48,7 @@ router.get("/:username", function(req, res){
 // 기존에 있던 값으로 form에 값들을 생성해야 함
 // 이를 위해 user에 || {}를 사용하지 않음
 // flash에 값이 있으면 오류가 있는경우, flash에 값이 없으면 처음 들어온 경우로 가정
-router.get("/:username/edit",function(req,res){
+router.get("/:username/edit", util.isLoggedin, checkPermission,function(req,res){
   var user = req.flash("user")[0];
   var errors = req.flash("errors")[0] || {};
   if(!user){
@@ -61,7 +62,7 @@ router.get("/:username/edit",function(req,res){
 });
 
 // update
-router.put("/:username",function(req,res,next){
+router.put("/:username", util.isLoggedin, checkPermission,function(req,res,next){
   User.findOne({username:req.params.username})
   .select({password:1}) //select로 db에서 항목을 선택한다 현재 false로 지정하여 선택을 해야 사용 할 수 있음
   .exec(function(err,user){
@@ -85,7 +86,7 @@ router.put("/:username",function(req,res,next){
     user.save(function(err, user){
      if(err){
        req.flash("user",req.body);
-       req.flash("errors",parseError(err));
+       req.flash("errors",util.parseError(err));
        return res.redirect("/users/"+req.params.username+"/edit");
      }
      res.redirect("/users/"+user.username);
@@ -99,18 +100,28 @@ module.exports = router;
 //Function
 //mongoose에서 내는 에러와 mongoDB에서 내는 에러의 형태가 다르기 때문에 이 함수를 통하여
 //에러의 형태를 {항목이름 : {message : "에러 메세지"}}로 통일시켜주는 함수
-function parseError(errors){
-  var parsed = {};
-  console.log("errors: ", errors);// 콘솔에서 에러 원형 확인
-  if(errors.name == 'ValidationError'){ //mongoose의 model validaion error를 처리
-    for(var name in errors.errors){
-      var validationError = errors.errors[name];
-      parsed[name] = {message:validationError.message};
-    }
-  }else if(errors.code == "11000" && errors.errmsg.indexOf("username")>0){
-    parsed.username = { message:"This username already exists!"}; // mongoDB에서 username이 중복되는 에러 처리
-  }else{ // 그외 에러 처리
-    parsed.unhandled = JSON.stringify(errors);
-  }
-  return parsed;
+// function parseError(errors){
+//   var parsed = {};
+//   console.log("errors: ", errors);// 콘솔에서 에러 원형 확인
+//   if(errors.name == 'ValidationError'){ //mongoose의 model validaion error를 처리
+//     for(var name in errors.errors){
+//       var validationError = errors.errors[name];
+//       parsed[name] = {message:validationError.message};
+//     }
+//   }else if(errors.code == "11000" && errors.errmsg.indexOf("username")>0){
+//     parsed.username = { message:"This username already exists!"}; // mongoDB에서 username이 중복되는 에러 처리
+//   }else{ // 그외 에러 처리
+//     parsed.unhandled = JSON.stringify(errors);
+//   }
+//   return parsed;
+// }
+
+// private functions // 2
+function checkPermission(req, res, next){
+ User.findOne({username:req.params.username}, function(err, user){
+  if(err) return res.json(err);
+  if(user.id != req.user.id) return util.noPermission(req, res);
+
+  next();
+ });
 }
